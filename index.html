@@ -10,11 +10,33 @@
             background: linear-gradient(45deg, #050505, #1a001a, #000b1a);
             background-size: 400% 400%;
             animation: gradient 15s ease infinite;
-            color: #eee; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            color: #eee; font-family: 'Segoe UI', sans-serif; 
             height: 100vh; display: flex; overflow: hidden; 
         }
         @keyframes gradient { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
 
+        /* SCHERMATA HOME (LOGIN) */
+        #home-page {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(15px);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 9999; transition: 0.8s;
+        }
+        .login-box {
+            background: rgba(20,20,20,0.8); padding: 40px; border-radius: 20px;
+            border: 2px solid #ff00ff; box-shadow: 0 0 30px #ff00ff55; text-align: center;
+        }
+        .login-box h1 { color: #ff00ff; text-shadow: 0 0 10px #ff00ff; margin-bottom: 20px; }
+        .login-box input { 
+            padding: 15px; width: 250px; background: #111; border: 1px solid #444; 
+            color: white; border-radius: 10px; margin-bottom: 20px; text-align: center;
+        }
+        .btn-entra { 
+            padding: 15px 40px; background: #ff00ff; color: white; border: none; 
+            border-radius: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase;
+        }
+
+        /* STRUTTURA ARENA (NASCOSTA ALL'INIZIO) */
         #sidebar, #right-panel { 
             width: 250px; background: rgba(17, 17, 17, 0.8); 
             backdrop-filter: blur(10px); border-right: 1px solid #ff00ff55; 
@@ -26,61 +48,67 @@
         .header { 
             padding: 15px; background: rgba(30, 30, 30, 0.5); 
             text-align: center; font-weight: bold; color: #ff00ff; 
-            text-shadow: 0 0 10px #ff00ff; border-bottom: 1px solid #333; 
-            text-transform: uppercase; letter-spacing: 2px;
+            border-bottom: 1px solid #333; text-transform: uppercase; letter-spacing: 2px;
         }
-
-        .stanza-link { padding: 15px; color: #ccc; cursor: pointer; transition: 0.3s; border-bottom: 1px solid #222; }
-        .stanza-link:hover { background: rgba(255, 0, 255, 0.2); color: white; padding-left: 20px; }
-
-        /* BOX CHAT REALE */
-        #chat-container { flex: 1; width: 100%; height: 100%; border: none; background: transparent; }
-
-        .cam-container { position: relative; width: 100%; aspect-ratio: 4/3; background: #000; margin-bottom: 10px; border: 2px solid #00f2ff; border-radius: 8px; overflow: hidden; }
+        .stanza-link { padding: 15px; color: #ccc; cursor: pointer; border-bottom: 1px solid #222; }
+        .cam-container { position: relative; width: 100%; aspect-ratio: 4/3; background: #000; border: 2px solid #00f2ff; border-radius: 8px; overflow: hidden; }
         video { width: 100%; height: 100%; object-fit: cover; }
-        .btn-cam-overlay { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.7); color: #00f2ff; border: 1px solid #00f2ff; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; }
-
-        .user-online { color: #00ff00; font-size: 14px; padding: 10px; display: flex; align-items: center; gap: 10px; }
-        .dot { width: 10px; height: 10px; background: #00ff00; border-radius: 50%; box-shadow: 0 0 5px #00ff00; }
     </style>
 </head>
 <body>
 
+    <div id="home-page">
+        <div class="login-box">
+            <h1>🐯 IMPERO DI TIGROTTA</h1>
+            <p>Inserisci il tuo Nick per entrare nell'Arena</p>
+            <input type="text" id="userNick" placeholder="Il tuo Nome...">
+            <br>
+            <button class="btn-entra" onclick="entraNellImpero()">ENTRA NEL REGNO</button>
+        </div>
+    </div>
+
     <div id="sidebar">
         <div class="header">🏰 STANZE</div>
-        <div class="stanza-link" onclick="document.getElementById('chat-title').innerText='👑 PRIVATA BOSS'">👑 Privata Boss</div>
-        <div class="stanza-link" onclick="document.getElementById('chat-title').innerText='💬 CHIACCHIERE'">💬 Chiacchiere</div>
-        <div class="stanza-link" onclick="document.getElementById('chat-title').innerText='🔥 ARENA LIVE'">🔥 Arena Live</div>
-        
-        <div class="header" style="margin-top:auto;">👥 ONLINE</div>
-        <div class="user-online"><div class="dot"></div> ⭐ TIGROTTA (Admin)</div>
+        <div class="stanza-link">👑 Privata Boss</div>
+        <div class="stanza-link">💬 Chiacchiere</div>
+        <div class="header" style="margin-top:auto;">👤 TU SEI</div>
+        <div id="displayNick" style="padding:15px; color: gold; font-weight: bold; text-align: center;">⭐ Ospite</div>
     </div>
 
     <div id="main">
         <div class="header" id="chat-title">L'ARENA DI TIGROTTA</div>
-        <iframe src="https://www5.cbox.ws/box/?boxid=960938&boxtag=AP3Bo3" width="100%" height="100%" allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto" id="chat-container"></iframe>
+        <iframe src="https://www5.cbox.ws/box/?boxid=960938&boxtag=AP3Bo3" width="100%" height="100%" frameborder="0" id="chat-container"></iframe>
     </div>
 
     <div id="right-panel">
         <div class="header" style="color: #00f2ff;">🎥 LIVE CAM</div>
         <div class="cam-container">
             <video id="webcam" autoplay playsinline></video>
-            <button class="btn-cam-overlay" onclick="toggleWebcam()">ACCENDI/SPEGNI</button>
+            <button onclick="toggleWebcam()" style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.7); color:white; border:1px solid #00f2ff; cursor:pointer;">ON/OFF</button>
         </div>
-        
         <div class="header" style="color: #00f2ff; margin-top: 15px;">🎧 MUSICA</div>
         <div id="playerContainer" style="width:100%; height:140px; background:#000; border:1px solid #00f2ff; border-radius:8px; margin-bottom:10px;"></div>
-        <input type="text" id="ytUrl" placeholder="Incolla Link YouTube..." style="width:100%; margin-bottom:5px; background:#222; color:white; border:1px solid #444; padding:8px; border-radius:4px;">
+        <input type="text" id="ytUrl" placeholder="Link YouTube..." style="width:100%; margin-bottom:5px; background:#222; color:white; border:1px solid #444; padding:8px;">
         <button onclick="caricaVideo()" style="width:100%; background:#00f2ff; color:#000; padding:10px; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">CARICA VIDEO</button>
     </div>
 
     <script>
+        function entraNellImpero() {
+            const nick = document.getElementById('userNick').value;
+            if(nick.trim() !== "") {
+                document.getElementById('displayNick').innerText = "⭐ " + nick.toUpperCase();
+                document.getElementById('home-page').style.opacity = "0";
+                setTimeout(() => {
+                    document.getElementById('home-page').style.display = "none";
+                }, 800);
+            } else {
+                alert("Devi mettere un nome, altrimenti la Boss non ti fa entrare!");
+            }
+        }
+
         function caricaVideo() {
             const url = document.getElementById('ytUrl').value;
-            let id = "";
-            if(url.includes("v=")) id = url.split("v=")[1].split("&")[0];
-            else if(url.includes("youtu.be/")) id = url.split("youtu.be/")[1];
-            
+            let id = url.includes("v=") ? url.split("v=")[1].split("&")[0] : url.split("youtu.be/")[1];
             if (id) {
                 document.getElementById('playerContainer').innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${id}?autoplay=1" frameborder="0" allowfullscreen></iframe>`;
             }
@@ -89,15 +117,8 @@
         let stream = null;
         async function toggleWebcam() {
             const video = document.getElementById('webcam');
-            if (stream) {
-                stream.getTracks().forEach(t => t.stop());
-                stream = null; video.srcObject = null;
-            } else {
-                try {
-                    stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                    video.srcObject = stream;
-                } catch (e) { alert("Attiva i permessi cam!"); }
-            }
+            if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; video.srcObject = null; }
+            else { try { stream = await navigator.mediaDevices.getUserMedia({ video: true }); video.srcObject = stream; } catch (e) { alert("Attiva i permessi cam!"); } }
         }
     </script>
 </body>

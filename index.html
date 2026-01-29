@@ -75,5 +75,37 @@
         </div>
     </div>
 
-</body>
+</body><script>
+    const input = document.querySelector('input');
+    const button = document.querySelector('button');
+    const chatBox = document.querySelector('#chat-box');
+
+    function inviaMessaggio() {
+        if (input.value.trim() !== "") {
+            // Crea il messaggio
+            const p = document.createElement('p');
+            p.innerHTML = `<strong style="color: #ff00ff;">TIGROTTA:</strong> <span style="color: white;">${input.value}</span>`;
+            p.style.margin = "5px 0";
+            p.style.padding = "5px";
+            p.style.borderBottom = "1px solid #1a1a1a";
+            
+            // Aggiungilo alla chat
+            chatBox.appendChild(p);
+            
+            // Pulisci l'input e vai a fondo
+            input.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    }
+
+    // Invia col tasto
+    button.onclick = inviaMessaggio;
+
+    // Invia premendo INVIO sulla tastiera
+    input.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            inviaMessaggio();
+        }
+    });
+</script>
 </html>

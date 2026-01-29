@@ -2,100 +2,148 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>IMPERO DI TIGROTTA 🐯</title>
+    <title>👑 IMPERO DI TIGROTTA 👑</title>
     <style>
         * { box-sizing: border-box; }
-        body { margin: 0; background: #050505; color: #eee; font-family: sans-serif; height: 100vh; display: flex; overflow: hidden; }
-        #sidebar { width: 220px; background: #111; border-right: 2px solid #ff00ff; display: flex; flex-direction: column; }
-        #main { flex: 1; display: flex; flex-direction: column; background: #000; }
-        #right-panel { width: 280px; background: #111; border-left: 2px solid #00f2ff; padding: 10px; overflow-y: auto; }
-        .header { padding: 12px; background: #1a1a1a; text-align: center; font-weight: bold; color: #ff00ff; border-bottom: 1px solid #333; text-transform: uppercase; }
+        body { 
+            margin: 0; 
+            background: linear-gradient(45deg, #050505, #1a001a, #000b1a);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: #eee; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            height: 100vh; display: flex; overflow: hidden; 
+        }
+        @keyframes gradient { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
+
+        /* Sidebar e Pannelli con effetto Vetro */
+        #sidebar, #right-panel { 
+            width: 250px; background: rgba(17, 17, 17, 0.8); 
+            backdrop-filter: blur(10px); border-right: 1px solid #ff00ff55; 
+            display: flex; flex-direction: column; 
+        }
+        #right-panel { border-right: none; border-left: 1px solid #00f2ff55; }
+
+        #main { flex: 1; display: flex; flex-direction: column; background: transparent; }
+
+        .header { 
+            padding: 15px; background: rgba(30, 30, 30, 0.5); 
+            text-align: center; font-weight: bold; color: #ff00ff; 
+            text-shadow: 0 0 10px #ff00ff; border-bottom: 1px solid #333; 
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+
         .stanza-link { padding: 15px; color: #ccc; cursor: pointer; transition: 0.3s; border-bottom: 1px solid #222; }
-        .stanza-link:hover { background: #222; color: #ff00ff; }
-        #chat-box { flex: 1; padding: 20px; overflow-y: auto; background-color: #080808; }
-        .input-area { padding: 15px; background: #1a1a1a; display: flex; gap: 10px; }
-        input { flex: 1; padding: 10px; background: #222; color: #fff; border: 1px solid #444; border-radius: 5px; }
-        button { padding: 10px 15px; background: #ff00ff; border: none; color: white; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .cam-container { position: relative; width: 100%; aspect-ratio: 4/3; background: #1a1a1a; margin-bottom: 10px; border: 1px solid #333; border-radius: 4px; overflow: hidden; }
-        video { width: 100%; height: 100%; object-fit: cover; background: #000; }
+        .stanza-link:hover { background: rgba(255, 0, 255, 0.2); color: white; padding-left: 20px; }
+
+        #chat-box { flex: 1; padding: 20px; overflow-y: auto; }
+        .msg { margin-bottom: 10px; padding: 8px; border-radius: 8px; background: rgba(255,255,255,0.05); }
+        .msg-admin { border-left: 4px solid gold; background: rgba(255, 215, 0, 0.1); }
+
+        .input-area { padding: 15px; background: rgba(20, 20, 20, 0.9); display: flex; flex-direction: column; gap: 10px; }
+        .input-row { display: flex; gap: 10px; }
+        input { flex: 1; padding: 12px; background: #222; color: #fff; border: 1px solid #444; border-radius: 5px; outline: none; }
+        input:focus { border-color: #ff00ff; box-shadow: 0 0 5px #ff00ff; }
+        
+        button { padding: 10px 20px; background: #ff00ff; border: none; color: white; border-radius: 5px; cursor: pointer; font-weight: bold; box-shadow: 0 0 10px #ff00ff; }
+        
+        .emoji-bar { display: flex; gap: 10px; font-size: 20px; cursor: pointer; }
+
+        .cam-container { position: relative; width: 100%; aspect-ratio: 4/3; background: #000; margin-bottom: 10px; border: 2px solid #00f2ff; border-radius: 8px; overflow: hidden; }
+        video { width: 100%; height: 100%; object-fit: cover; }
+        
+        .user-online { color: #00ff00; font-size: 14px; padding: 10px; display: flex; align-items: center; gap: 10px; }
+        .dot { width: 10px; height: 10px; background: #00ff00; border-radius: 50%; box-shadow: 0 0 5px #00ff00; }
     </style>
 </head>
 <body>
 
     <div id="sidebar">
-        <div class="header">🏰 Stanze</div>
-        <div class="stanza-link" onclick="cambiaStanza('👑 PRIVATA BOSS')">👑 Privata Boss</div>
-        <div class="stanza-link" onclick="cambiaStanza('💬 CHIACCHIERE')">💬 Chiacchiere</div>
-        <div class="stanza-link" onclick="cambiaStanza('🎵 MUSICA LIVE')">🎵 Musica Live</div>
+        <div class="header">🏰 STANZE</div>
+        <div class="stanza-link" onclick="cambia('👑 PRIVATA BOSS')">👑 Privata Boss</div>
+        <div class="stanza-link" onclick="cambia('💬 CHIACCHIERE')">💬 Chiacchiere</div>
+        <div class="stanza-link" onclick="cambia('🔥 ARENA LIVE')">🔥 Arena Live</div>
         
-        <div class="header" style="margin-top:auto;">👥 Online</div>
-        <div style="padding:15px; color: gold; font-weight: bold;">⭐ TIGROTTA</div>
+        <div class="header" style="margin-top:auto;">👥 ONLINE</div>
+        <div class="user-online"><div class="dot"></div> ⭐ TIGROTTA (Admin)</div>
+        <div class="user-online" style="color:#aaa;"><div class="dot" style="background:#888;"></div> Guest_221</div>
+        <div style="padding: 10px; font-size: 12px; color: #555;">Utenti connessi: 12</div>
     </div>
 
     <div id="main">
         <div class="header" id="chat-title">L'ARENA DI TIGROTTA</div>
-        <div id="chat-box"></div>
+        <div id="chat-box">
+            <div class="msg" style="color: #ff00ff; text-align: center;">--- Benvenuta nel tuo Impero, Regina ---</div>
+        </div>
+        
         <div class="input-area">
-            <input type="text" id="msgInput" placeholder="Scrivi un messaggio...">
-            <button onclick="invia()">INVIA</button>
+            <div class="emoji-bar">
+                <span onclick="addEmoji('🐯')">🐯</span><span onclick="addEmoji('👑')">👑</span><span onclick="addEmoji('🔥')">🔥</span><span onclick="addEmoji('💎')">💎</span><span onclick="addEmoji('✨')">✨</span>
+            </div>
+            <div class="input-row">
+                <input type="text" id="msgInput" placeholder="Scrivi un messaggio nell'Arena...">
+                <button onclick="invia()">INVIA</button>
+            </div>
         </div>
     </div>
 
     <div id="right-panel">
-        <div class="header" style="color: #00f2ff;">🎥 La Tua Cam</div>
+        <div class="header" style="color: #00f2ff;">🎥 LIVE CAM</div>
         <div class="cam-container">
             <video id="webcam" autoplay playsinline></video>
-            <button onclick="toggleWebcam()" style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); font-size:10px; padding:5px;">ON/OFF</button>
+            <button onclick="toggleWebcam()" style="position:absolute; bottom:5px; right:5px; background:rgba(0,242,255,0.3); font-size:10px; color:white; border:1px solid #00f2ff;">ON/OFF</button>
         </div>
         
-        <div class="header" style="color: #00f2ff; margin-top: 15px;">🎧 YouTube</div>
-        <div id="playerContainer" style="width:100%; height:150px; background:#000; border:1px solid #00f2ff; margin-bottom:5px;"></div>
-        <input type="text" id="ytUrl" placeholder="Link Video..." style="width:100%; margin-bottom:5px;">
-        <button onclick="caricaVideo()" style="width:100%; background:#00f2ff; color:#000;">CARICA</button>
+        <div class="header" style="color: #00f2ff; margin-top: 15px;">🎧 MUSICA</div>
+        <div id="playerContainer" style="width:100%; height:140px; background:#000; border:1px solid #00f2ff; border-radius:8px; margin-bottom:10px;"></div>
+        <input type="text" id="ytUrl" placeholder="Incolla Link YouTube..." style="width:100%; margin-bottom:5px;">
+        <button onclick="caricaVideo()" style="width:100%; background:#00f2ff; color:#000;">CARICA VIDEO</button>
     </div>
 
     <script>
-        // Funzione per cambiare stanza
-        function cambiaStanza(nome) {
-            document.getElementById('chat-title').innerText = nome;
-            document.getElementById('chat-box').innerHTML += `<p style="color:#555; font-style:italic;">Sei entrata in: ${nome}</p>`;
+        function cambia(n) { 
+            document.getElementById('chat-title').innerText = n;
+            const box = document.getElementById('chat-box');
+            box.innerHTML += `<div class="msg" style="color:#888; text-align:center;">Sei passata alla stanza: ${n}</div>`;
         }
 
-        // Funzione Chat
+        function addEmoji(e) { document.getElementById('msgInput').value += e; }
+
         function invia() {
             const input = document.getElementById('msgInput');
             const chat = document.getElementById('chat-box');
             if (input.value.trim() !== "") {
-                chat.innerHTML += `<p><strong style="color:#ff00ff">TIGROTTA:</strong> ${input.value}</p>`;
+                chat.innerHTML += `<div class="msg msg-admin"><strong style="color:gold">⭐ TIGROTTA:</strong> <span style="color:#fff">${input.value}</span></div>`;
                 input.value = "";
                 chat.scrollTop = chat.scrollHeight;
             }
         }
 
-        // Funzione YouTube
         function caricaVideo() {
             const url = document.getElementById('ytUrl').value;
-            let videoId = url.includes("v=") ? url.split("v=")[1].split("&")[0] : url.split("youtu.be/")[1];
-            if (videoId) {
-                document.getElementById('playerContainer').innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+            let id = url.includes("v=") ? url.split("v=")[1].split("&")[0] : url.split("youtu.be/")[1];
+            if (id) {
+                document.getElementById('playerContainer').innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`;
             }
         }
 
-        // Funzione Webcam (Migliorata)
         let stream = null;
         async function toggleWebcam() {
             const video = document.getElementById('webcam');
             if (stream) {
                 stream.getTracks().forEach(t => t.stop());
-                stream = null;
-                video.srcObject = null;
+                stream = null; video.srcObject = null;
             } else {
                 try {
                     stream = await navigator.mediaDevices.getUserMedia({ video: true });
                     video.srcObject = stream;
-                } catch (e) { alert("Attiva i permessi cam nel browser!"); }
+                } catch (e) { alert("Attiva i permessi cam!"); }
             }
         }
+
+        // Permetti Invio con tastiera
+        document.getElementById("msgInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") { invia(); }
+        });
     </script>
 </body>
 </html>

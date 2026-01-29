@@ -1,22 +1,136 @@
-<div id="sidebar">
-    <div class="header">🏰 STANZE</div>
-    <div class="stanza-link" onclick="cambiaStanza('960938', 'AP3Bo3', 'ARENA PRINCIPALE')">🏟️ Arena Principale</div>
-    <div class="stanza-link" onclick="cambiaStanza('ID_SECONDA_CHAT', 'TAG_SECONDO', 'ZONA PRIVATA')">🔐 Zona Privata</div>
-    <div class="stanza-link" onclick="cambiaStanza('ID_TERZA_CHAT', 'TAG_TERZO', 'BACKSTAGE')">🔥 Backstage</div>
-    
-    <div class="header" style="margin-top:auto;">👤 TU SEI</div>
-    <div id="displayNick" style="padding:20px; color: #ff00ff; font-weight: bold; text-align: center; font-size: 20px;">⭐ Ospite</div>
-</div>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>👑 IMPERO DI TIGROTTA 👑</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            margin: 0; 
+            background: linear-gradient(45deg, #050505, #1a001a, #000b1a);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: #eee; font-family: 'Segoe UI', sans-serif; 
+            height: 100vh; display: flex; overflow: hidden; 
+        }
+        @keyframes gradient { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
 
-<script>
-    // FUNZIONE MAGICA PER CAMBIARE STANZA
-    function cambiaStanza(id, tag, nomeStanza) {
-        // Cambia il titolo in alto
-        document.getElementById('chat-title').innerText = nomeStanza;
-        // Cambia l'indirizzo della chat nel rullo centrale
-        const nuovaChat = "https://www5.cbox.ws/box/?boxid=" + id + "&boxtag=" + tag;
-        document.getElementById('chat-container').src = nuovaChat;
-    }
+        /* SCHERMATA HOME */
+        #home-page {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(15px);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 9999; transition: 0.8s;
+        }
+        .login-box {
+            background: rgba(20,20,20,0.8); padding: 40px; border-radius: 20px;
+            border: 2px solid #ff00ff; box-shadow: 0 0 30px #ff00ff55; text-align: center;
+        }
+        .login-box h1 { color: #ff00ff; text-shadow: 0 0 10px #ff00ff; margin-bottom: 20px; }
+        .login-box input { 
+            padding: 15px; width: 250px; background: #111; border: 1px solid #444; 
+            color: white; border-radius: 10px; margin-bottom: 20px; text-align: center;
+        }
+        .btn-entra { 
+            padding: 15px 40px; background: #ff00ff; color: white; border: none; 
+            border-radius: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase;
+        }
 
-    // ... (tutte le altre funzioni che hai già: entraNellImpero, caricaVideo, ecc.)
-</script>
+        /* STRUTTURA */
+        #sidebar, #right-panel { 
+            width: 250px; background: rgba(17, 17, 17, 0.8); 
+            backdrop-filter: blur(10px); border-right: 1px solid #ff00ff55; 
+            display: flex; flex-direction: column; 
+        }
+        #right-panel { border-right: none; border-left: 1px solid #00f2ff55; padding: 10px; }
+        #main { flex: 1; display: flex; flex-direction: column; }
+
+        .header { 
+            padding: 15px; background: rgba(30, 30, 30, 0.5); 
+            text-align: center; font-weight: bold; color: #ff00ff; 
+            border-bottom: 1px solid #333; text-transform: uppercase; letter-spacing: 2px;
+        }
+        
+        .stanza-link { 
+            padding: 15px; color: #ccc; cursor: pointer; transition: 0.3s; 
+            border-bottom: 1px solid #222; font-size: 14px;
+        }
+        .stanza-link:hover { background: rgba(255, 0, 255, 0.1); color: #ff00ff; }
+
+        #chat-container { border: none; width: 100%; height: 100%; }
+
+        .cam-container { position: relative; width: 100%; aspect-ratio: 4/3; background: #000; border: 2px solid #00f2ff; border-radius: 8px; overflow: hidden; }
+        video { width: 100%; height: 100%; object-fit: cover; }
+    </style>
+</head>
+<body>
+
+    <div id="home-page">
+        <div class="login-box">
+            <h1>🐯 IMPERO DI TIGROTTA</h1>
+            <input type="text" id="userNick" placeholder="Il tuo Nome...">
+            <br>
+            <button class="btn-entra" onclick="entraNellImpero()">ENTRA NEL REGNO</button>
+        </div>
+    </div>
+
+    <div id="sidebar">
+        <div class="header">🏰 STANZE</div>
+        <div class="stanza-link" onclick="cambiaStanza('ARENA PRINCIPALE')">🏟️ Arena Principale</div>
+        <div class="stanza-link" onclick="cambiaStanza('PRIVATA BOSS')">👑 Privata Boss</div>
+        <div class="stanza-link" onclick="cambiaStanza('ZONA RELAX')">🎧 Zona Relax</div>
+        
+        <div class="header" style="margin-top:auto;">👤 TU SEI</div>
+        <div id="displayNick" style="padding:20px; color: #ff00ff; font-weight: bold; text-align: center; font-size: 18px; text-shadow: 0 0 10px #ff00ff;">...</div>
+    </div>
+
+    <div id="main">
+        <div class="header" id="chat-title">ARENA PRINCIPALE</div>
+        <iframe src="https://www5.cbox.ws/box/?boxid=960938&boxtag=AP3Bo3" width="100%" height="100%" frameborder="0" id="chat-container"></iframe>
+    </div>
+
+    <div id="right-panel">
+        <div class="header" style="color: #00f2ff;">🎥 LIVE CAM</div>
+        <div class="cam-container">
+            <video id="webcam" autoplay playsinline></video>
+            <button onclick="toggleWebcam()" style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.7); color:white; border:1px solid #00f2ff; cursor:pointer; padding:5px; border-radius:4px;">ON/OFF</button>
+        </div>
+        <div class="header" style="color: #00f2ff; margin-top: 15px;">🎧 MUSICA</div>
+        <div id="playerContainer" style="width:100%; height:140px; background:#000; border:1px solid #00f2ff; border-radius:8px; margin-bottom:10px;"></div>
+        <input type="text" id="ytUrl" placeholder="Link YouTube..." style="width:100%; margin-bottom:5px; background:#222; color:white; border:1px solid #444; padding:8px; border-radius:4px;">
+        <button onclick="caricaVideo()" style="width:100%; background:#00f2ff; color:#000; padding:10px; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">CARICA VIDEO</button>
+    </div>
+
+    <script>
+        function entraNellImpero() {
+            const nick = document.getElementById('userNick').value;
+            if(nick.trim() !== "") {
+                document.getElementById('displayNick').innerText = "⭐ " + nick.toUpperCase();
+                document.getElementById('home-page').style.opacity = "0";
+                setTimeout(() => { document.getElementById('home-page').style.display = "none"; }, 800);
+            } else { alert("Metti un nome, Boss!"); }
+        }
+
+        function cambiaStanza(nomeStanza) {
+            document.getElementById('chat-title').innerText = nomeStanza;
+            // Per ora usiamo sempre la tua chat principale così non sparisce nulla!
+            document.getElementById('chat-container').src = "https://www5.cbox.ws/box/?boxid=960938&boxtag=AP3Bo3";
+        }
+
+        function caricaVideo() {
+            const url = document.getElementById('ytUrl').value;
+            let id = url.includes("v=") ? url.split("v=")[1].split("&")[0] : url.split("youtu.be/")[1];
+            if (id) {
+                document.getElementById('playerContainer').innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${id}?autoplay=1" frameborder="0" allowfullscreen></iframe>`;
+            }
+        }
+
+        let stream = null;
+        async function toggleWebcam() {
+            const video = document.getElementById('webcam');
+            if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; video.srcObject = null; }
+            else { try { stream = await navigator.mediaDevices.getUserMedia({ video: true }); video.srcObject = stream; } catch (e) { alert("Attiva la cam!"); } }
+        }
+    </script>
+</body>
+</html>

@@ -15,14 +15,12 @@
         }
         @keyframes gradient { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
 
-        /* Sidebar e Pannelli con effetto Vetro */
         #sidebar, #right-panel { 
             width: 250px; background: rgba(17, 17, 17, 0.8); 
             backdrop-filter: blur(10px); border-right: 1px solid #ff00ff55; 
             display: flex; flex-direction: column; 
         }
         #right-panel { border-right: none; border-left: 1px solid #00f2ff55; }
-
         #main { flex: 1; display: flex; flex-direction: column; background: transparent; }
 
         .header { 
@@ -36,21 +34,32 @@
         .stanza-link:hover { background: rgba(255, 0, 255, 0.2); color: white; padding-left: 20px; }
 
         #chat-box { flex: 1; padding: 20px; overflow-y: auto; }
-        .msg { margin-bottom: 10px; padding: 8px; border-radius: 8px; background: rgba(255,255,255,0.05); }
-        .msg-admin { border-left: 4px solid gold; background: rgba(255, 215, 0, 0.1); }
+        .msg { margin-bottom: 10px; padding: 8px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+        .msg-admin { border-left: 4px solid gold; background: rgba(255, 215, 0, 0.1); box-shadow: 0 0 5px rgba(255, 215, 0, 0.2); }
 
-        .input-area { padding: 15px; background: rgba(20, 20, 20, 0.9); display: flex; flex-direction: column; gap: 10px; }
+        .input-area { padding: 15px; background: rgba(20, 20, 20, 0.95); border-top: 1px solid #333; }
+        
+        /* BLOCCO SMILE UNICO */
+        .emoji-panel { 
+            display: flex; flex-wrap: wrap; gap: 8px; 
+            padding: 10px; background: rgba(0,0,0,0.3); 
+            border-radius: 8px; margin-bottom: 10px;
+            border: 1px solid #444;
+        }
+        .emoji-group { display: flex; gap: 5px; border-right: 1px solid #444; padding-right: 8px; }
+        .emoji-item { cursor: pointer; font-size: 22px; transition: 0.2s; }
+        .emoji-item:hover { transform: scale(1.3); }
+
         .input-row { display: flex; gap: 10px; }
         input { flex: 1; padding: 12px; background: #222; color: #fff; border: 1px solid #444; border-radius: 5px; outline: none; }
         input:focus { border-color: #ff00ff; box-shadow: 0 0 5px #ff00ff; }
         
         button { padding: 10px 20px; background: #ff00ff; border: none; color: white; border-radius: 5px; cursor: pointer; font-weight: bold; box-shadow: 0 0 10px #ff00ff; }
         
-        .emoji-bar { display: flex; gap: 10px; font-size: 20px; cursor: pointer; }
-
         .cam-container { position: relative; width: 100%; aspect-ratio: 4/3; background: #000; margin-bottom: 10px; border: 2px solid #00f2ff; border-radius: 8px; overflow: hidden; }
         video { width: 100%; height: 100%; object-fit: cover; }
-        
+        .btn-cam-overlay { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.7); color: #00f2ff; border: 1px solid #00f2ff; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; }
+
         .user-online { color: #00ff00; font-size: 14px; padding: 10px; display: flex; align-items: center; gap: 10px; }
         .dot { width: 10px; height: 10px; background: #00ff00; border-radius: 50%; box-shadow: 0 0 5px #00ff00; }
     </style>
@@ -65,22 +74,43 @@
         
         <div class="header" style="margin-top:auto;">👥 ONLINE</div>
         <div class="user-online"><div class="dot"></div> ⭐ TIGROTTA (Admin)</div>
-        <div class="user-online" style="color:#aaa;"><div class="dot" style="background:#888;"></div> Guest_221</div>
-        <div style="padding: 10px; font-size: 12px; color: #555;">Utenti connessi: 12</div>
+        <div style="padding: 10px; font-size: 12px; color: #555;">Server Status: Online</div>
     </div>
 
     <div id="main">
         <div class="header" id="chat-title">L'ARENA DI TIGROTTA</div>
-        <div id="chat-box">
-            <div class="msg" style="color: #ff00ff; text-align: center;">--- Benvenuta nel tuo Impero, Regina ---</div>
-        </div>
+        <div id="chat-box"></div>
         
         <div class="input-area">
-            <div class="emoji-bar">
-                <span onclick="addEmoji('🐯')">🐯</span><span onclick="addEmoji('👑')">👑</span><span onclick="addEmoji('🔥')">🔥</span><span onclick="addEmoji('💎')">💎</span><span onclick="addEmoji('✨')">✨</span>
+            <div class="emoji-panel">
+                <div class="emoji-group">
+                    <span class="emoji-item" onclick="addE('🐯')">🐯</span>
+                    <span class="emoji-item" onclick="addE('🐱')">🐱</span>
+                    <span class="emoji-item" onclick="addE('🦁')">🦁</span>
+                </div>
+                <div class="emoji-group">
+                    <span class="emoji-item" onclick="addE('👑')">👑</span>
+                    <span class="emoji-item" onclick="addE('💎')">💎</span>
+                    <span class="emoji-item" onclick="addE('✨')">✨</span>
+                    <span class="emoji-item" onclick="addE('⭐')">⭐</span>
+                </div>
+                <div class="emoji-group">
+                    <span class="emoji-item" onclick="addE('🔥')">🔥</span>
+                    <span class="emoji-item" onclick="addE('⚡')">⚡</span>
+                    <span class="emoji-item" onclick="addE('🌹')">🌹</span>
+                    <span class="emoji-item" onclick="addE('💖')">💖</span>
+                </div>
+                <div class="emoji-group" style="border:none;">
+                    <span class="emoji-item" onclick="addE('😂')">😂</span>
+                    <span class="emoji-item" onclick="addE('😜')">😜</span>
+                    <span class="emoji-item" onclick="addE('😎')">😎</span>
+                    <span class="emoji-item" onclick="addE('🚀')">🚀</span>
+                    <span class="emoji-item" onclick="addE('💋')">💋</span>
+                </div>
             </div>
+
             <div class="input-row">
-                <input type="text" id="msgInput" placeholder="Scrivi un messaggio nell'Arena...">
+                <input type="text" id="msgInput" placeholder="Messaggio per l'Impero...">
                 <button onclick="invia()">INVIA</button>
             </div>
         </div>
@@ -90,7 +120,7 @@
         <div class="header" style="color: #00f2ff;">🎥 LIVE CAM</div>
         <div class="cam-container">
             <video id="webcam" autoplay playsinline></video>
-            <button onclick="toggleWebcam()" style="position:absolute; bottom:5px; right:5px; background:rgba(0,242,255,0.3); font-size:10px; color:white; border:1px solid #00f2ff;">ON/OFF</button>
+            <button class="btn-cam-overlay" onclick="toggleWebcam()">ACCENDI/SPEGNI</button>
         </div>
         
         <div class="header" style="color: #00f2ff; margin-top: 15px;">🎧 MUSICA</div>
@@ -100,13 +130,8 @@
     </div>
 
     <script>
-        function cambia(n) { 
-            document.getElementById('chat-title').innerText = n;
-            const box = document.getElementById('chat-box');
-            box.innerHTML += `<div class="msg" style="color:#888; text-align:center;">Sei passata alla stanza: ${n}</div>`;
-        }
-
-        function addEmoji(e) { document.getElementById('msgInput').value += e; }
+        function cambia(n) { document.getElementById('chat-title').innerText = n; }
+        function addE(e) { document.getElementById('msgInput').value += e; }
 
         function invia() {
             const input = document.getElementById('msgInput');
@@ -122,7 +147,7 @@
             const url = document.getElementById('ytUrl').value;
             let id = url.includes("v=") ? url.split("v=")[1].split("&")[0] : url.split("youtu.be/")[1];
             if (id) {
-                document.getElementById('playerContainer').innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`;
+                document.getElementById('playerContainer').innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${id}?autoplay=1" frameborder="0" allowfullscreen></iframe>`;
             }
         }
 
@@ -140,9 +165,8 @@
             }
         }
 
-        // Permetti Invio con tastiera
-        document.getElementById("msgInput").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") { invia(); }
+        document.getElementById("msgInput").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") invia();
         });
     </script>
 </body>

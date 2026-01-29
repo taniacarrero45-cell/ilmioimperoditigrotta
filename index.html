@@ -1,1 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>IMPERO DI TIGROTTA 🐯</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; background: #050505; color: #eee; font-family: 'Segoe UI', Arial, sans-serif; height: 100vh; display: flex; overflow: hidden; }
+        
+        /* SINISTRA: Stanze e Utenti */
+        #sidebar { width: 220px; background: #111; border-right: 2px solid #ff00ff; display: flex; flex-direction: column; }
+        
+        /* CENTRO: Chat principale */
+        #main { flex: 1; display: flex; flex-direction: column; background: #000; }
+        
+        /* DESTRA: Webcam e Player */
+        #right-panel { width: 280px; background: #111; border-left: 2px solid #00f2ff; padding: 10px; }
 
+        .header { padding: 12px; background: #1a1a1a; text-align: center; font-weight: bold; color: #ff00ff; border-bottom: 1px solid #333; text-transform: uppercase; letter-spacing: 1px; }
+        
+        #chat-box { flex: 1; padding: 20px; overflow-y: auto; background-color: #080808; border-bottom: 1px solid #333; }
+        
+        .input-area { padding: 15px; background: #1a1a1a; display: flex; gap: 10px; }
+        input { flex: 1; padding: 12px; background: #222; color: #fff; border: 1px solid #444; border-radius: 5px; outline: none; }
+        input:focus { border-color: #ff00ff; }
+        
+        button { padding: 10px 20px; background: #ff00ff; border: none; color: white; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        button:hover { background: #cc00cc; }
+
+        .cam-box { width: 100%; aspect-ratio: 4/3; background: #1a1a1a; margin-bottom: 10px; border: 1px solid #333; display: flex; align-items: center; justify-content: center; color: #555; font-size: 11px; border-radius: 4px; position: relative; }
+        .cam-box::before { content: "LIVE"; position: absolute; top: 5px; left: 5px; font-size: 9px; color: red; opacity: 0.5; }
+
+        .user-list { padding: 10px; list-style: none; margin: 0; }
+        .user-online { color: gold; font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+        .status-dot { width: 8px; height: 8px; background: #00ff00; border-radius: 50%; }
+    </style>
+</head>
+<body>
+
+    <div id="sidebar">
+        <div class="header">🏰 Stanze</div>
+        <div style="padding:15px;">
+            <div style="color: #ff00ff; cursor: pointer; margin-bottom: 10px;">👑 Privata Boss</div>
+            <div style="color: #ccc; cursor: pointer; margin-bottom: 10px;">💬 Chiacchiere</div>
+            <div style="color: #ccc; cursor: pointer;">🎵 Musica Live</div>
+        </div>
+        
+        <div class="header" style="margin-top:auto;">👥 Online</div>
+        <div class="user-list">
+            <div class="user-online"><span class="status-dot"></span> ⭐ TIGROTTA (Admin)</div>
+            <div style="color: #888; padding-left: 13px;">Guest_342</div>
+        </div>
+    </div>
+
+    <div id="main">
+        <div class="header" style="color: #fff;">IL MIO IMPERO - ARENA</div>
+        <div id="chat-box">
+            <p style="color: #555; text-align: center; font-size: 12px;">Benvenuta nel tuo comando, Tigrotta. Sistema pronto.</p>
+        </div>
+        <div class="input-area">
+            <input type="text" placeholder="Invia un messaggio nell'Arena...">
+            <button>INVIA</button>
+        </div>
+    </div>
+
+    <div id="right-panel">
+        <div class="header" style="color: #00f2ff;">🎥 Webcams</div>
+        <div class="cam-box">WEB-CAM BOSS</div>
+        <div class="cam-box">OSPITE 1</div>
+        <div class="cam-box">OSPITE 2</div>
+        
+        <div class="header" style="color: #00f2ff; margin-top: 15px;">🎧 Audio</div>
+        <div style="background: #222; padding: 10px; border-radius: 5px; font-size: 11px; color: #888; text-align: center;">
+            Player in attesa...
+        </div>
+    </div>
+
+</body>
+</html>
